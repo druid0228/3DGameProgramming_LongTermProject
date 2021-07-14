@@ -943,33 +943,15 @@ void Scene::Update(float fTimeElapsed)
 	);
 	m_pCamera->SetLookAtPosition(Vector3::Add(m_vecAnimObject[0]->GetPosition(), XMFLOAT3(0, 1, 0)));
 
-	//if (!gTestInt) {
-
-	//	for (auto iter = m_vecObject.begin(); iter != m_vecObject.end(); iter++) (*iter)->Update(fTimeElapsed);
-	//	for (auto iter = m_vecAnimObject.begin(); iter != m_vecAnimObject.end(); iter++) (*iter)->Update(fTimeElapsed);
-	//	m_pCamera->SetPosition(
-	//		Vector3::Add(Vector3::Add(m_vecAnimObject[0]->GetPosition(), Vector3::Multiply(-2.5, m_vecAnimObject[0]->GetLook())), XMFLOAT3(0, 2, 0))
-	//	);
-	//	m_pCamera->SetLookAtPosition(Vector3::Add(m_vecAnimObject[0]->GetPosition(), XMFLOAT3(0,1,0)));
-	//}
-
 }
 void Scene::Input(UCHAR* pKeyBuffer, float fTimeElapsed)
 {
-	//if (pKeyBuffer[KeyCode::_W] & 0xF0) { m_pCamera->MoveForward(2); }
-	//if (pKeyBuffer[KeyCode::_A] & 0xF0) { m_pCamera->MoveLeft(2); }
-	//if (pKeyBuffer[KeyCode::_S] & 0xF0) { m_pCamera->MoveBackward(2); }
-	//if (pKeyBuffer[KeyCode::_D] & 0xF0) { m_pCamera->MoveRight(2); }
 	if (pKeyBuffer[KeyCode::_R] & 0xF0) { m_pCamera->MoveUp(2); }
 	if (pKeyBuffer[KeyCode::_F] & 0xF0) { m_pCamera->MoveDown(2); }
 	if (pKeyBuffer[KeyCode::_Q] & 0xF0) { m_pCamera->Rotate(0, -50 * fTimeElapsed, 0); }
 	if (pKeyBuffer[KeyCode::_E] & 0xF0) { m_pCamera->Rotate(0, 50 * fTimeElapsed, 0); }
 	if (pKeyBuffer[KeyCode::_Z] & 0xF0) { m_pCamera->Rotate(50 * fTimeElapsed, 0, 0); }
 	if (pKeyBuffer[KeyCode::_X] & 0xF0) { m_pCamera->Rotate(-50 * fTimeElapsed, 0, 0); }
-
-	//if (pKeyBuffer[KeyCode::_J] & 0xF0) { dynamic_cast<HumanoidObject*>(m_vecAnimObject[0])->WalkForward(); }
-	//if (pKeyBuffer[KeyCode::_U] & 0xF0) gTestInt = 1;
-	//if (pKeyBuffer[KeyCode::_I] & 0xF0) gTestInt = 0;
 
 	if (pKeyBuffer[KeyCode::_1] & 0xF0) {
 		//m_pCamera->SetPosition(XMFLOAT3(0, 1, 0));
@@ -986,28 +968,6 @@ void Scene::Input(UCHAR* pKeyBuffer, float fTimeElapsed)
 		//m_pCamera->SetLookAt(XMFLOAT3(0, 1, 0));
 		gTestInt = 2;
 	}
-	if (pKeyBuffer[KeyCode::_4] & 0xF0) {
-		m_pCamera->SetPosition(XMFLOAT3(3, 1, 3));
-		m_pCamera->SetLookAt(XMFLOAT3(0, 1, 0));
-	}
-	if (pKeyBuffer[KeyCode::_5] & 0xF0) {
-		m_pCamera->SetPosition(XMFLOAT3(3, 3, 3));
-		m_pCamera->SetLookAt(XMFLOAT3(0, 0, 0));
-	}
-	if (pKeyBuffer[KeyCode::_6] & 0xF0) {
-		m_pCamera->SetPosition(XMFLOAT3(3, 3, 3));
-		m_pCamera->SetLookAt(XMFLOAT3(0, 0, 0));
-	}
-
-	//if (pKeyBuffer[KeyCode::_N] & 0xF0) { test = true; }
-	//if (pKeyBuffer[KeyCode::_M] & 0xF0) { test = false; }
-		////if (test) {
-		////	ReloadLight();
-		////	test = false; 
-		////}m_vecObject[0]->Move(XMFLOAT3(0.1, 0, 0));
-		
-		//m_vecObject[0]->Move(XMFLOAT3(0, 0, 0.1 * fTimeElapsed));
-
 
 	dynamic_cast<HumanoidObject*>(m_vecAnimObject[0])->Input(pKeyBuffer);
 }

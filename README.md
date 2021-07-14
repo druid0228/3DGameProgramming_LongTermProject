@@ -821,3 +821,29 @@ Bloom 효과는 구현했으니 평균 휘도 구하는 코드를 책을 참고�
 아직도 헷갈리는 부분이 너무 많다... 
 
 <img src="https://user-images.githubusercontent.com/21697638/124716563-30d2ff00-df3f-11eb-96ec-16d1a6e96cfd.png" width="70%" height="70%"></img>
+
+
+### 이번주 일정
+#### 21.07.12 - 21.07.18
+* Multi Thread Rendering
+
+### 2주 목표
+* Multi Thread Rendering
+
+백신 1차 접종 맞고 푹 쉬었음.
+
+### 2021.07.13
+
+멀티스레드 사용법을 먼저 리마인드. 예전에 들었던 멀티스레드 프로그래밍 강의 내용을 어떤 분이 정리해두신게 있어서 참고했다.
+
+### 2021.07.14
+
+[Tips and experience of DX12 Engine development . (slideshare.net)](https://www.slideshare.net/dgtman/tips-and-experience-of-dx12-engine-development)
+
+멀티스레드를 사용할만한 부분은
+- G-buffer 생성 시에 오브젝트들을 스레드 별로 나눠 그리기
+- 그림자 깊이맵을 스레드 별로 나눠 그리기
+
+정도가 있을 것 같다.
+
+미리 CmdList를 여러 개 생성해서 들고 있다가 필요한 부분에서 새 스레드를 생성해서 명령을 넣는 방법을 먼저 해보고... 다른 방법도 좀 찾아보고... 해봐야 할 것 같음.

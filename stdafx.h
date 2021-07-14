@@ -32,6 +32,8 @@
 #include <fstream>
 #include <algorithm>
 #include <utility>
+#include <thread>
+#include <chrono>
 
 #include <d3d12.h>
 #include "d3dUtil.h"
@@ -49,6 +51,7 @@
 using namespace DirectX;
 using namespace DirectX::PackedVector;
 using namespace std;
+using namespace std::chrono;
 using Microsoft::WRL::ComPtr;
 
 
