@@ -149,6 +149,17 @@ void Framework::CreateCommandQueueAndList()
 
 	hResult = m_pd3dDevice->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, m_pd3dCommandAllocator, NULL, __uuidof(ID3D12GraphicsCommandList), (void**)&m_pd3dCommandList);
 	hResult = m_pd3dCommandList->Close();
+
+
+
+	/*============================================================================
+	* For Multi-Thread Rendering!!
+	============================================================================*/
+	m_vecpd3dCmdList.resize(6);
+	for (int i = 0; i < 6; ++i) {
+		hResult = m_pd3dDevice->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, m_pd3dCommandAllocator, NULL, __uuidof(ID3D12GraphicsCommandList), (void**)&m_vecpd3dCmdList[0]);
+		hResult = m_vecpd3dCmdList[0]->Close();
+	}
 }
 void Framework::CreateRtvAndDsvDescriptorHeaps()
 {

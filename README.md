@@ -847,3 +847,14 @@ Bloom 효과는 구현했으니 평균 휘도 구하는 코드를 책을 참고�
 정도가 있을 것 같다.
 
 미리 CmdList를 여러 개 생성해서 들고 있다가 필요한 부분에서 새 스레드를 생성해서 명령을 넣는 방법을 먼저 해보고... 다른 방법도 좀 찾아보고... 해봐야 할 것 같음.
+
+### 2021.07.15
+
+<img src="https://user-images.githubusercontent.com/21697638/125733034-af46b913-bb07-446d-8a42-59c32ca1dc64.png" width="70%" height="70%"></img>
+
+<img src="https://user-images.githubusercontent.com/21697638/125733135-cfa488ca-5875-43f8-8e6c-4b2331707c3e.png" width="70%" height="70%"></img>
+
+AnimUploader를 전역에 하나 만들던 것에서 각 AnimatedObject 별로 하나씩 갖게 하였다. (모든 객체가 각자 애니메이션 데이터를 업로드 할 수 있도록)
+사람 오브젝트에게 간단한 AI를 만들어서 무작위 방향으로 움직이도록 만들고, 721개를 (1개는 플레이어가 조종) 생성했다.
+
+프레임 한 장 그릴 때 걸리는 시간을 줄이는게 목표.

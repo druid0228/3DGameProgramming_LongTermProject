@@ -344,12 +344,33 @@ void Scene::Init(Framework* pFramework, ID3D12Device* pd3dDevice, ID3D12Graphics
 	for (int i = 0; i < vecObjDesc.size(); i++) {
 		if (strcmp(vecObjDesc[i].model.c_str(), "") != 0) {
 			if (vecObjDesc[i].isAnimated) {
-				HumanoidObject* tempObj = new HumanoidObject(m_pd3dDevice, m_pd3dCommandList, m_d3dCbvCPUDescriptorStartHandle, m_d3dCbvGPUDescriptorStartHandle);
-				tempObj->Move(vecObjDesc[i].position);
-				tempObj->Rotate(vecObjDesc[i].rotation);
-				tempObj->SetModel(vecObjDesc[i].model.c_str());
-				tempObj->SetMaterial(vecObjDesc[i].material.c_str());
-				m_vecAnimObject.push_back(tempObj);
+
+				HumanoidObject* tempObj;
+				if (i == 0) {
+					tempObj = new HumanoidObject(m_pd3dDevice, m_pd3dCommandList, m_d3dCbvCPUDescriptorStartHandle, m_d3dCbvGPUDescriptorStartHandle,
+						new AnimationUploader(m_pd3dDevice, m_pd3dCommandList, m_d3dSrvCPUDescriptorStartHandle, m_d3dSrvGPUDescriptorStartHandle));
+					tempObj->Move(vecObjDesc[i].position);
+					tempObj->Rotate(vecObjDesc[i].rotation);
+					tempObj->SetModel(vecObjDesc[i].model.c_str());
+					tempObj->SetMaterial(vecObjDesc[i].material.c_str());
+					m_vecAnimObject.push_back(tempObj);
+				}
+				else {
+					tempObj = new HumanoidObject(m_pd3dDevice, m_pd3dCommandList, m_d3dCbvCPUDescriptorStartHandle, m_d3dCbvGPUDescriptorStartHandle,
+						new AnimationUploader(m_pd3dDevice, m_pd3dCommandList, m_d3dSrvCPUDescriptorStartHandle, m_d3dSrvGPUDescriptorStartHandle), new AI());
+					//tempObj->Move(XMFLOAT3(
+					//	(rand() % 2000) * 0.01f - 10,
+					//	0,
+					//	(rand() % 2000) * 0.01f - 10));
+					//tempObj->Rotate(XMFLOAT3(
+					//	0,
+					//	(rand() % 360),
+					//	0));
+					tempObj->SetModel(vecObjDesc[i].model.c_str());
+					tempObj->SetMaterial(vecObjDesc[i].material.c_str());
+					m_vecAnimObject.push_back(tempObj);
+				}
+
 			}
 			else {
 				Object* tempObj = new Object(m_pd3dDevice, m_pd3dCommandList, m_d3dCbvCPUDescriptorStartHandle, m_d3dCbvGPUDescriptorStartHandle);
@@ -361,7 +382,7 @@ void Scene::Init(Framework* pFramework, ID3D12Device* pd3dDevice, ID3D12Graphics
 			}
 		}
 	}
-	g_AnimUploader = new AnimationUploader(pd3dDevice, pd3dCommandList, m_d3dCbvCPUDescriptorStartHandle, m_d3dCbvGPUDescriptorStartHandle);
+	//g_AnimUploader = new AnimationUploader(pd3dDevice, pd3dCommandList, m_d3dCbvCPUDescriptorStartHandle, m_d3dCbvGPUDescriptorStartHandle);
 
 	m_vecObject[0]->SetParent(m_vecAnimObject[0]);
 	m_vecObject[0]->SetPosition(XMFLOAT3(-0.028f, 0.0f, 0.08f));
@@ -969,7 +990,8 @@ void Scene::Input(UCHAR* pKeyBuffer, float fTimeElapsed)
 		gTestInt = 2;
 	}
 
-	dynamic_cast<HumanoidObject*>(m_vecAnimObject[0])->Input(pKeyBuffer);
+	for (auto pObj : m_vecAnimObject) pObj->Input(pKeyBuffer);
+	//dynamic_cast<HumanoidObject*>(m_vecAnimObject[0])->Input(pKeyBuffer);
 }
 
 void Scene::CreatePSO()

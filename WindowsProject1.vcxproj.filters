@@ -132,6 +132,9 @@
     <ClInclude Include="Mask.h">
       <Filter>소스 파일\Object\Animation\Mask</Filter>
     </ClInclude>
+    <ClInclude Include="AI.h">
+      <Filter>소스 파일\Object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WindowsProject1.cpp">
@@ -235,5 +238,6 @@
     <Text Include="Data\ObjectData.txt" />
     <Text Include="Data\LightData.txt" />
     <Text Include="Data\AssetsData.txt" />
+    <Text Include="Data\MaterialData.txt" />
   </ItemGroup>
 </Project>

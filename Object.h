@@ -1,6 +1,7 @@
 #pragma once
 #include "Animation.h"
 #include "State.h"
+#include "AI.h"
 
 struct CB_OBJECT_INFO {
 	XMFLOAT4X4	xmf4x4World;
@@ -90,7 +91,8 @@ public:
 	AnimatedObject(
 		ID3D12Device* pd3dDevice, ID3D12GraphicsCommandList* pd3dCommandList,
 		D3D12_CPU_DESCRIPTOR_HANDLE& d3dCbvCPUDescriptorStartHandle,
-		D3D12_GPU_DESCRIPTOR_HANDLE& d3dCbvGPUDescriptorStartHandle);
+		D3D12_GPU_DESCRIPTOR_HANDLE& d3dCbvGPUDescriptorStartHandle,
+		AnimationUploader* pAnimUploader);
 
 public:
 	virtual void Render(ID3D12GraphicsCommandList* pd3dCommandList);
@@ -103,6 +105,7 @@ public:
 	BoneHierarchy		m_boneHierarchyInfo;
 protected:
 	vector<StateLayer*>	m_vecpStateLayer;
+	AnimationUploader* m_pAnimUploader = NULL;
 };
 
 class HumanoidObject : public AnimatedObject {
@@ -110,5 +113,14 @@ public:
 	HumanoidObject(
 		ID3D12Device* pd3dDevice, ID3D12GraphicsCommandList* pd3dCommandList,
 		D3D12_CPU_DESCRIPTOR_HANDLE& d3dCbvCPUDescriptorStartHandle,
-		D3D12_GPU_DESCRIPTOR_HANDLE& d3dCbvGPUDescriptorStartHandle);
+		D3D12_GPU_DESCRIPTOR_HANDLE& d3dCbvGPUDescriptorStartHandle,
+		AnimationUploader* pAnimUploader,
+		AI* pAI = NULL);
+
+public:
+	virtual void Input(UCHAR* pKeyBuffer);
+	virtual void Update(float fTimeElapsed);
+
+protected:
+	AI* m_pAI = NULL;
 };

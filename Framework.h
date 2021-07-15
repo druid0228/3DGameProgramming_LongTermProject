@@ -42,6 +42,7 @@ private:
 	ID3D12CommandAllocator*		m_pd3dCommandAllocator;
 	ID3D12CommandQueue*			m_pd3dCommandQueue;
 	ID3D12GraphicsCommandList*	m_pd3dCommandList;
+	vector<ID3D12GraphicsCommandList*> m_vecpd3dCmdList;
 	
 	ID3D12Fence*				m_pd3dFence;
 	UINT64						m_nFenceValues[m_nSwapChainBuffers];

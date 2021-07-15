@@ -143,9 +143,14 @@ void DebugWindowObject::Render(ID3D12GraphicsCommandList* pd3dCommandList)
 	m_pDWMesh->Render(pd3dCommandList);
 }
 
-AnimatedObject::AnimatedObject(ID3D12Device* pd3dDevice, ID3D12GraphicsCommandList* pd3dCommandList, D3D12_CPU_DESCRIPTOR_HANDLE& d3dCbvCPUDescriptorStartHandle, D3D12_GPU_DESCRIPTOR_HANDLE& d3dCbvGPUDescriptorStartHandle)
+AnimatedObject::AnimatedObject(
+	ID3D12Device* pd3dDevice, ID3D12GraphicsCommandList* pd3dCommandList,
+	D3D12_CPU_DESCRIPTOR_HANDLE& d3dCbvCPUDescriptorStartHandle,
+	D3D12_GPU_DESCRIPTOR_HANDLE& d3dCbvGPUDescriptorStartHandle,
+	AnimationUploader* pAnimUploader)
 	:Object(pd3dDevice, pd3dCommandList, d3dCbvCPUDescriptorStartHandle, d3dCbvGPUDescriptorStartHandle)
 {
+	m_pAnimUploader = pAnimUploader;
 }
 XMMATRIX const AnimatedObject::GetBoneMatrix(int boneIdx)
 {
@@ -153,7 +158,8 @@ XMMATRIX const AnimatedObject::GetBoneMatrix(int boneIdx)
 }
 void AnimatedObject::Render(ID3D12GraphicsCommandList* pd3dCommandList)
 {
-	g_AnimUploader->SetAnimationTransform(pd3dCommandList, m_boneHierarchyInfo);
+	//g_AnimUploader->SetAnimationTransform(pd3dCommandList, m_boneHierarchyInfo);
+	m_pAnimUploader->SetAnimationTransform(pd3dCommandList, m_boneHierarchyInfo);
 	Object::Render(pd3dCommandList);
 }
 void AnimatedObject::Update(float fTimeElapsed)
@@ -176,8 +182,13 @@ void AnimatedObject::Input(UCHAR* pKeyBuffer)
 		m_vecpStateLayer[i]->Input(pKeyBuffer);
 }
 
-HumanoidObject::HumanoidObject(ID3D12Device* pd3dDevice, ID3D12GraphicsCommandList* pd3dCommandList, D3D12_CPU_DESCRIPTOR_HANDLE& d3dCbvCPUDescriptorStartHandle, D3D12_GPU_DESCRIPTOR_HANDLE& d3dCbvGPUDescriptorStartHandle)
-	:AnimatedObject(pd3dDevice, pd3dCommandList, d3dCbvCPUDescriptorStartHandle, d3dCbvGPUDescriptorStartHandle)
+HumanoidObject::HumanoidObject(
+	ID3D12Device* pd3dDevice, ID3D12GraphicsCommandList* pd3dCommandList, 
+	D3D12_CPU_DESCRIPTOR_HANDLE& d3dCbvCPUDescriptorStartHandle, 
+	D3D12_GPU_DESCRIPTOR_HANDLE& d3dCbvGPUDescriptorStartHandle,
+	AnimationUploader* pAnimUploader,
+	AI* pAI)
+	:AnimatedObject(pd3dDevice, pd3dCommandList, d3dCbvCPUDescriptorStartHandle, d3dCbvGPUDescriptorStartHandle, pAnimUploader)
 {
 	m_boneHierarchyInfo = g_AnimMng.GetBoneHierarchyFromAnimClip("Humanoid_Idle");
 
@@ -190,4 +201,22 @@ HumanoidObject::HumanoidObject(ID3D12Device* pd3dDevice, ID3D12GraphicsCommandLi
 
 	m_vecpStateLayer.push_back(MovementLayer);
 	m_vecpStateLayer.push_back(ActionLayer);
+
+	m_pAI = pAI;
+}
+
+void HumanoidObject::Input(UCHAR* pKeyBuffer)
+{
+	if (m_pAI) {
+		for (int i = 0; i < m_vecpStateLayer.size(); i++)
+			m_vecpStateLayer[i]->Input(m_pAI->GetInput());
+	}
+	else AnimatedObject::Input(pKeyBuffer);
+}
+
+void HumanoidObject::Update(float fTimeElapsed)
+{
+	if(m_pAI) m_pAI->Update(fTimeElapsed);
+	AnimatedObject::Update(fTimeElapsed);
+
 }
